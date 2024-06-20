@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Trek Trivia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000020;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 40pt;
+            margin-top: 20px;
+            color: #FFD700; /* Bright gold color */
+        }
+
+        .trivia-description {
+            font-family: Arial, sans-serif;
+            font-size: 24pt;
+            color: white;
+            margin-top: 50px;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .trivia-buttons {
+            margin-top: 100px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .trivia-buttons button {
+            background-color: #000020;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 18pt;
+            border: 2px solid gold;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Star Trek Trivia</h1>
+    <div class="trivia-description">
+        Test your knowledge of Star Trek.<br>
+        This may be the hardest Star Trek quiz you have ever taken.<br>
+        You will have the option to answer 10, 25 or 50 questions.<br>
+        Have fun, and leave feedback.<br><br>
+        When complete, this quiz will offer 250 questions. However, it<br>
+        is a work in progress.
+    </div>
+    <div class="trivia-buttons">
+        <button data-questions="10">Play 10 Questions</button>
+        <button data-questions="25">Play 25 Questions</button>
+        <button data-questions="50">Play 50 Questions</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.trivia-buttons button');
+
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const numQuestions = parseInt(button.getAttribute('data-questions'));
+                    fetch('https://raw.githubusercontent.com/Lead-Role/ST-Trivia/main/Star%20Trek%20Trivia.json')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok ' + response.statusText);
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            // Shuffle the questions
+                            const shuffledQuestions = data.sort(() => 0.5 - Math.random());
+                            // Slice the required number of questions
+                            const selectedQuestions = shuffledQuestions.slice(0, numQuestions);
+                            console.log(`Selected ${numQuestions} Questions:`, selectedQuestions);
+                            
+                            // Clear the screen
+                            document.body.innerHTML = '';
+
+                            // Import the Orbitron font
+                            const link = document.createElement('link');
+                            link.href = 'https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap';
+                            link.rel = 'stylesheet';
+                            document.head.appendChild(link);
+
+                            // Display the initial title
+                            const title = document.createElement('h1');
+                            title.innerText = `You have chosen to answer ${numQuestions} questions. Good luck!`;
+                            title.style.color = 'white';
+                            title.style.fontFamily = 'Orbitron, sans-serif';
+                            title.style.fontSize = '30pt';
+                            title.style.textAlign = 'center';
+                            title.style.marginTop = '20px';
+                            document.body.appendChild(title);
+
+                            // Display the countdown message
+                            const countdownMessage = document.createElement('div');
+                            countdownMessage.innerHTML = 'Your game will start in <span id="countdown">10</span> seconds';
+                            countdownMessage.style.color = 'white';
+                            countdownMessage.style.fontFamily = 'Arial, sans-serif';
+                            countdownMessage.style.fontSize = '24pt';
+                            countdownMessage.style.textAlign = 'center';
+                            countdownMessage.style.marginTop = '150px';
+                            document.body.appendChild(countdownMessage);
+
+                            // Start the countdown
+                            let countdown = 10;
+                            const countdownElement = document.getElementById('countdown');
+                            const countdownInterval = setInterval(() => {
+                                countdown -= 1;
+                                countdownElement.innerText = countdown;
+                                if (countdown === 0) {
+                                    clearInterval(countdownInterval);
+                                    // Clear the screen again
+                                    document.body.innerHTML = '';
+
+                                    // Display the new title
+                                    const newTitle = document.createElement('h1');
+                                    newTitle.innerText = 'Star Trek Trivia';
+                                    newTitle.style.color = '#FFD700'; // Gold color
+                                    newTitle.style.fontFamily = 'Orbitron, sans-serif';
+                                    newTitle.style.fontSize = '40pt';
+                                    newTitle.style.textAlign = 'center';
+                                    newTitle.style.marginTop = '20px';
+                                    document.body.appendChild(newTitle);
+
+                                    // Display the under construction message
+                                    const underConstructionMessage = document.createElement('div');
+                                    underConstructionMessage.innerText = 'This page is under construction. We apologize for the inconvenience.';
+                                    underConstructionMessage.style.color = 'white';
+                                    underConstructionMessage.style.fontFamily = 'Arial, sans-serif';
+                                    underConstructionMessage.style.fontSize = '30pt';
+                                    underConstructionMessage.style.textAlign = 'center';
+                                    underConstructionMessage.style.marginTop = '50px';
+                                    document.body.appendChild(underConstructionMessage);
+                                }
+                            }, 1000);
+                        })
+                        .catch(error => {
+                            console.error('There has been a problem with your fetch operation:', error);
+                        });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
