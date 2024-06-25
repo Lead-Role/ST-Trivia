@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Trek Trivia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+    background-color: #000020;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    overflow: hidden; /* Ensure no scrolling */
+}
+
+.trivia-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 40pt;
+    color: #FFD700;
+    text-align: center;
+    padding-top: 25px;
+}
+
+h1 {
+    font-size: 30pt; /* Reduced font size */
+    margin-top: 10px;
+    color: #FFD700; /* Bright gold color */
+}
+
+.trivia-description {
+    font-family: Arial, sans-serif;
+    font-size: 14pt; /* Reduced font size */
+    color: white;
+    margin-top: 20px;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.trivia-buttons {
+    margin-top: 20px; /* Reduced margin */
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Reduced gap */
+}
+
+.trivia-buttons button {
+    background-color: #000020;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14pt; /* Reduced font size */
+    border: 2px solid gold;
+    padding: 5px 10px; /* Reduced padding */
+    cursor: pointer;
+}
+
+.question {
+    color: gold;
+    font-family: Arial, sans-serif;
+    font-size: 16pt; /* Reduced font size */
+    text-align: center;
+    margin-top: 10px; /* Reduced margin */
+}
+
+.buttons-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px; /* Reduced margin */
+}
+
+.answer-button {
+    background-color: #000020;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14pt; /* Reduced font size */
+    border: 2px solid gold;
+    padding: 10px; /* Reduced padding */
+    cursor: pointer;
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+    margin-top: 10px; /* Reduced margin */
+}
+
+.feedback {
+    font-family: Arial, sans-serif;
+    font-size: 14pt; /* Reduced font size */
+    text-align: center;
+    margin-top: 10px; /* Reduced margin */
+}
+
+.next-question-button {
+    background-color: #000020;
+    color: white;
+    font-family: Arial, sans-serif;
+    font-size: 14pt; /* Reduced font size */
+    border: 2px solid deepskyblue;
+    padding: 10px; /* Reduced padding */
+    cursor: pointer;
+    border-radius: 10px;
+    text-align: center;
+    margin-top: 10px; /* Reduced margin */
+    width: auto;
+}
+
+    </style>
+</head>
+<body>
+    <div class="trivia-title">Star Trek Trivia</div>
+<div class="trivia-description">
+    Test your knowledge of Star Trek.<br>
+    This may be the hardest Star Trek quiz you have ever taken.<br>
+    You will have the option to answer 10, 25 or 50 questions.<br>
+    Have fun, and leave feedback.<br><br>
+    When complete, this quiz will offer 250 questions. However, it<br>
+    is a work in progress.
+</div>
+<div class="trivia-buttons">
+    <button data-questions="10">Play 10 Questions</button>
+    <button data-questions="25">Play 25 Questions</button>
+    <button data-questions="50">Play 50 Questions</button>
+</div>
+<div class="question"></div>
+<div class="buttons-container"></div>
+<div class="feedback"></div>
+<div class="next-question-container"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+  // Import the Orbitron font
+  const link = document.createElement("link");
+  link.href = "https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap";
+  link.rel = "stylesheet";
+  document.head.appendChild(link);
+
+  // Function to shuffle array
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+
+  // Function to update the score
+  function updateScore(correct, scoreElement) {
+    totalAnswered += 1;
+    if (correct) {
+      correctAnswers += 1;
+    }
+    scoreElement.innerText = `You have answered ${correctAnswers} questions out of ${totalAnswered} correctly.`;
+  }
+
+  const buttons = document.querySelectorAll(".trivia-buttons button");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const numQuestions = parseInt(button.getAttribute("data-questions"));
+      let currentQuestionIndex = 0; // Initialize counter
+      let correctAnswers = 0;
+      let totalAnswered = 0;
+
+      // Clear the screen
+      document.body.innerHTML = "";
+
+      // Display the title
+      const title = document.createElement("h1");
+      title.innerText = `You have chosen to play ${numQuestions} questions. Good luck!`;
+      title.style.color = "#FFD700"; // Gold color
+      title.style.fontFamily = "Orbitron, sans-serif";
+      title.style.fontSize = "24pt";
+      title.style.textAlign = "center";
+      title.style.marginTop = "10px";
+      document.body.appendChild(title);
+
+      // Display the countdown message
+      const countdownMessage = document.createElement("div");
+      countdownMessage.innerHTML = `Your game will start in <span id="countdown">10</span> seconds`;
+      countdownMessage.style.color = "white";
+      countdownMessage.style.fontFamily = "Arial, sans-serif";
+      countdownMessage.style.fontSize = "14pt"; // Reduced font size
+      countdownMessage.style.textAlign = "center";
+      countdownMessage.style.marginTop = "50px"; // Reduced margin
+      document.body.appendChild(countdownMessage);
+
+      // Start the countdown
+      let countdown = 10;
+      const countdownElement = document.getElementById("countdown");
+      const countdownInterval = setInterval(() => {
+        countdown -= 1;
+        countdownElement.innerText = countdown;
+        if (countdown === 0) {
+          clearInterval(countdownInterval);
+          // Clear the screen again
+          document.body.innerHTML = "";
+
+          // Display the new title
+          const newTitle = document.createElement("h1");
+          newTitle.innerText = "Star Trek Trivia";
+          newTitle.style.color = "#FFD700"; // Gold color
+          newTitle.style.fontFamily = "Orbitron, sans-serif";
+          newTitle.style.fontSize = "30pt"; // Reduced font size
+          newTitle.style.textAlign = "center";
+          newTitle.style.marginTop = "10px";
+          document.body.appendChild(newTitle);
+
+          // Display the score
+          const score = document.createElement("div");
+          score.innerText = `You have answered ${correctAnswers} questions out of ${totalAnswered} correctly.`;
+          score.style.color = "white";
+          score.style.fontFamily = "Arial, sans-serif";
+          score.style.fontSize = "14pt"; // Reduced font size
+          score.style.textAlign = "center";
+          score.style.marginTop = "10px"; // Reduced margin
+          document.body.appendChild(score);
+
+          // Fetch questions and start the quiz
+          fetch("https://raw.githubusercontent.com/Lead-Role/ST-Trivia/main/Star%20Trek%20Trivia.json")
+            .then((response) => response.json())
+            .then((data) => {
+              shuffleArray(data);
+              const selectedQuestions = data.slice(0, numQuestions);
+
+              // Display the first question and answers
+              function displayQuestion() {
+                if (currentQuestionIndex < numQuestions) {
+                  const question = selectedQuestions[currentQuestionIndex];
+                  const answers = [question["Answer 1"], question["Answer 2"], question["Answer 3"], question["Answer 4"]];
+                  shuffleArray(answers);
+
+                  // Display the question
+                  const questionElement = document.createElement("div");
+                  questionElement.innerText = question.Question;
+                  questionElement.className = "question";
+                  document.body.appendChild(questionElement);
+
+                  // Display the answer buttons
+                  const buttonsContainer = document.createElement("div");
+                  buttonsContainer.className = "buttons-container";
+                  document.body.appendChild(buttonsContainer);
+
+                  answers.forEach((answer) => {
+                    const answerButton = document.createElement("button");
+                    answerButton.innerText = answer;
+                    answerButton.className = "answer-button";
+                    answerButton.style.marginTop = "10px"; // Reduced margin
+                    answerButton.style.padding = "10px"; // Reduced padding
+                    answerButton.addEventListener("click", () => {
+                      const feedbackElement = document.createElement("div");
+                      if (answer == question["Correct Answer"]) {
+                        feedbackElement.innerText = "Correct";
+                        feedbackElement.style.color = "limegreen";
+                        updateScore(true, score);
+                      } else {
+                        feedbackElement.innerText = "Incorrect";
+                        feedbackElement.style.color = "tomato";
+                        updateScore(false, score);
+                      }
+                      feedbackElement.className = "feedback";
+                      document.body.appendChild(feedbackElement);
+
+                      // Display the correct answer below the last answer
+                      const correctAnswerElement = document.createElement("div");
+                      correctAnswerElement.innerText = `The correct answer is: ${question["Correct Answer"]}`;
+                      correctAnswerElement.style.color = "white";
+                      correctAnswerElement.style.marginTop = "10px"; // Reduced margin
+                      correctAnswerElement.style.fontFamily = "Arial, sans-serif";
+                      correctAnswerElement.style.fontSize = "14pt"; // Reduced font size
+                      correctAnswerElement.style.textAlign = "center";
+                      document.body.appendChild(correctAnswerElement);
+
+                      // Display the next question button
+                      const nextQuestionButton = document.createElement("button");
+                      nextQuestionButton.innerText = "Next Question";
+                      nextQuestionButton.className = "next-question-button";
+                      nextQuestionButton.style.padding = "10px"; // Reduced padding
+                      nextQuestionButton.addEventListener("click", () => {
+                        currentQuestionIndex++;
+                        document.body.innerHTML = "";
+                        document.body.appendChild(newTitle);
+                        document.body.appendChild(score);
+                        displayQuestion();
+                      });
+                      document.body.appendChild(nextQuestionButton);
+                    });
+                    buttonsContainer.appendChild(answerButton);
+                  });
+                } else {
+                  document.body.innerHTML = "<h1>Quiz Completed!</h1>";
+                }
+              }
+
+              // Start with the first question
+              displayQuestion();
+            })
+            .catch((error) => {
+              console.error("Error fetching trivia questions:", error);
+            });
+        }
+      }, 1000);
+    });
+  });
+});
+
+    </script>
+</body>
+</html>
