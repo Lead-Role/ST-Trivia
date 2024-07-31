@@ -1,3 +1,37 @@
-# ST-Trivia
-A Star Trek television series and film trivia quiz that, when complete, will offer more than
-500 questions. Currently, there are 165 questions available. Only 335 to go.
+STAR TREK TRIVIA - This is a Star Trek trivia quiz/game. It currently contains 165 questions with the
+goal of 500 questions when complete. This is a work in progress. 
+
+All Star Trek movies and television series (including all animated shows) are included. Short Treks
+will not be included.
+
+These movies and shows will be included when complete:
+
+TELEVISION SERIES:
+
+Star Trek: The Original Series
+Star Trek: The Animated Series
+Star Trek: The Next Generation
+Star Trek: Deep Space Nine
+Star Trek: Voyager
+Star Trek: Enterprise
+Star Trek: Discovery
+Star Trek: Picard
+Star Trek: Lower Decks
+Star Trek: Prodigy
+Star Trek: Strange New Worlds
+
+MOVIES:
+
+Star Trek: The Motion Picture (1979)
+Star Trek II: The Wrath of Khan (1982)
+Star Trek III: The Search for Spock (1984)
+Star Trek IV: The Voyage Home (1986)
+Star Trek V: The Final Frontier (1989)
+Star Trek VI: The Undiscovered Country (1991)
+Star Trek: Generations (1994)
+Star Trek: First Contact (1996)
+Star Trek: Insurrection (1998)
+Star Trek: Nemesis (2002)
+Star Trek (2009)
+Star Trek Into Darkness (2013)
+Star Trek Beyond (2016)
