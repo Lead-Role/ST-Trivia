@@ -36,5 +36,7 @@ Star Trek (2009)
 Star Trek Into Darkness (2013)
 Star Trek Beyond (2016)
 
+There is no plan to include Short Treks at this time. 
+
 It is planned that additional series/movies will be added as the franchise continues to expand.
 
