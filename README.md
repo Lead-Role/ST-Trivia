@@ -35,3 +35,5 @@ Star Trek: Nemesis (2002)
 Star Trek (2009)
 Star Trek Into Darkness (2013)
 Star Trek Beyond (2016)
+
+It is planned that additional series/movies will be added as the franchise continues to expand.
