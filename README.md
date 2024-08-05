@@ -1,4 +1,4 @@
-STAR TREK TRIVIA - This is a Star Trek trivia quiz/game. It currently contains 165 questions with the
+STAR TREK TRIVIA - This is a Star Trek trivia quiz/game. It currently contains 184 questions with the
 goal of 500 questions when complete. This is a work in progress. 
 
 All Star Trek movies and television series (including all animated shows) are included. Short Treks
