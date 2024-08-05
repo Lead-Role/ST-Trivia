@@ -39,5 +39,7 @@ Star Trek Beyond (2016)
 
 There is no plan to include Short Treks at this time. 
 
-It is planned that additional series/movies will be added as the franchise continues to expand.
+It is planned that additional series/movies will be added as the franchise continues to expand. Most notably, 
+it is expected that Star Trek: Section 31 and Star Trek: Strange New Worlds season 3 will be released in the
+near future.
 
